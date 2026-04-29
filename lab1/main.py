@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from agents import Agent, Runner, OpenAIChatCompletionsModel, AsyncOpenAI, set_tracing_disabled, function_tool
+from agents import Agent, Runner, OpenAIChatCompletionsModel, AsyncOpenAI, set_tracing_disabled, function_tool, ModelSettings, StopAtTools
 
 load_dotenv()
 set_tracing_disabled(disabled=True)
@@ -37,7 +37,9 @@ agent = Agent(
     name="HelloAgent",
     instructions="You are a helpful assistant. Use the get_order_status tool when asked about orders.",
     model=model,
-    tools=[get_order_status] 
+    tools=[get_order_status], 
+    tool_use_behavior=StopAtTools(stop_at_tool_names=["get_order_status"]),
+    # model_settings=ModelSettings(tool_choice = 'required'),
 )
 
 # Get user input
